@@ -1,14 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, {useState} from 'react';
 import type {Node} from 'react';
 import {
+  Button,
+  Linking,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -26,86 +21,63 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [Items, setItems] = useState([
+    {key: 1, item: 'Item1'},
+    {key: 2, item: 'Item2'},
+    {key: 3, item: 'Item3'},
+    {key: 4, item: 'Item4'},
+    {key: 5, item: 'Item5'},
+    {key: 6, item: 'Item6'},
+    {key: 7, item: 'Item7'},
+    {key: 8, item: 'Item8'},
+    {key: 9, item: 'Item9'},
+    {key: 10, item: 'Item10'},
+    {key: 11, item: 'Item11'},
+  ]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const [Refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+    setItems([...Items, {key: 69, item: 'Item69'}]);
+    setRefreshing(false);
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      style={styles.body}
+      refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={onRefresh} />}>
+      {Items.map(object => {
+        return (
+          <View style={styles.item} key={object.key}>
+            <Text style={styles.text}>{object.item}</Text>
+          </View>
+        );
+      })}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  body: {
+    flex: 1,
+    backgroundColor: 'rgb(255,255,255)',
+    flexDirection: 'column',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  text: {
+    color: '#000000',
+    fontSize: 20,
+    fontStyle: 'italic',
+    margin: 10,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  item: {
+    backgroundColor: '#338149',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
   },
-  highlight: {
-    fontWeight: '700',
+  button: {
+    backgroundColor: '#FF0',
   },
 });
 
