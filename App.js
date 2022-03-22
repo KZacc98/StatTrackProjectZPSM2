@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import type {Node} from 'react';
 import {
+  Alert,
   Button,
+  FlatList,
   Linking,
   RefreshControl,
   SafeAreaView,
@@ -9,9 +11,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput, ToastAndroid,
+  TouchableHighlight,
+  TouchableOpacity,
   useColorScheme,
   View,
-} from 'react-native';
+} from "react-native";
 
 import {
   Colors,
@@ -22,39 +27,34 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const App: () => Node = () => {
-  const [Items, setItems] = useState([
-    {key: 1, item: 'Item1'},
-    {key: 2, item: 'Item2'},
-    {key: 3, item: 'Item3'},
-    {key: 4, item: 'Item4'},
-    {key: 5, item: 'Item5'},
-    {key: 6, item: 'Item6'},
-    {key: 7, item: 'Item7'},
-    {key: 8, item: 'Item8'},
-    {key: 9, item: 'Item9'},
-    {key: 10, item: 'Item10'},
-    {key: 11, item: 'Item11'},
-  ]);
-
-  const [Refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
-    setRefreshing(true);
-    setItems([...Items, {key: 69, item: 'Item69'}]);
-    setRefreshing(false);
+  const [name, setName] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const onPressHandler = () => {
+    if (name.length > 1) {
+      setSubmitted(!submitted);
+    } else {
+      // Alert.alert('Warning', 'Name too short', [
+      //   {text: 'OK', onPress: () => console.warn('ok pressed')},
+      // ]);
+      ToastAndroid.show('ToastMessage displayed', ToastAndroid.SHORT);
+    }
   };
 
   return (
-    <ScrollView
-      style={styles.body}
-      refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={onRefresh} />}>
-      {Items.map(object => {
-        return (
-          <View style={styles.item} key={object.key}>
-            <Text style={styles.text}>{object.item}</Text>
-          </View>
-        );
-      })}
-    </ScrollView>
+    <View style={styles.body}>
+      <Text style={styles.text}>Write ur name</Text>
+      <TextInput
+        style={styles.input}
+        placeholder={'eg. john'}
+        onChangeText={value => setName(value)}
+      />
+      <TouchableOpacity onPress={onPressHandler} style={styles.button}>
+        <Text style={styles.text}>{submitted ? 'clear' : 'submit'}</Text>
+      </TouchableOpacity>
+      {submitted ? (
+        <Text style={styles.text}>you are registered as: {name}</Text>
+      ) : null}
+    </View>
   );
 };
 
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: 'rgb(255,255,255)',
-    flexDirection: 'column',
+    alignItems: 'center',
   },
   text: {
     color: '#000000',
@@ -70,14 +70,20 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     margin: 10,
   },
-  item: {
-    backgroundColor: '#338149',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
+  input: {
+    width: 200,
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius: 5,
+    textAlign: 'center',
+    fontSize: 20,
+    margin: 20,
   },
   button: {
-    backgroundColor: '#FF0',
+    backgroundColor: '#6fb9c4',
+    width: 150,
+    height: 50,
+    alignItems: 'center',
   },
 });
 
