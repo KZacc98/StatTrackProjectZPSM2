@@ -4,8 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import GradesScreen from './Screens/GradesScreen';
 import AddScreen from './Screens/AddScreen';
 import HomeScreen from './Screens/HomeScreen';
+import LoginScreen from './Screens/LoginScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 const Tab = createBottomTabNavigator();
 const App: () => Node = () => {
@@ -31,9 +33,34 @@ const App: () => Node = () => {
             return <FontAwesome name={iconName} size={size} color={color} />;
           },
         })}>
-        <Tab.Screen name={'GradesScreen'} component={GradesScreen} />
-        <Tab.Screen name={'AddScreen'} component={AddScreen} />
-        <Tab.Screen name={'HomeScreen'} component={HomeScreen} />
+        <Tab.Screen
+          name={'GradesScreen'}
+          component={GradesScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name={'AddScreen'}
+          component={AddScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name={'HomeScreen'}
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name={'Login'}
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
